@@ -12,12 +12,13 @@ import CompanionPage from "@/pages/Companion/CompanionPage";
 import SettingsPage from "@/pages/Settings/SettingsPage";
 import LivingRhythmPage from "@/pages/LivingRhythm/LivingRhythmPage";
 import OnboardingRouter from "@/views/Onboarding/OnboardingRouter";
-import PortalPreview from "@/pages/Portal/PortalPreview"; // ✅ Entry portal
+import PortalPreview from "@/pages/Portal/PortalPreview"; // ✅ Sacred entry
 
 export default function AppRouter() {
   const { user, profile, loading } = useUserSync();
 
-  if (loading) {
+  // ✅ Gate rendering until Supabase has returned a defined user (null or object)
+  if (loading || typeof user === "undefined") {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <p>Syncing your Codex state...</p>
@@ -25,8 +26,8 @@ export default function AppRouter() {
     );
   }
 
-  // ✅ Fix: only redirect to /portal after user is confirmed to be unauthenticated
-  if (!loading && !user) {
+  // ✅ Now safe to redirect if the user is *truly* unauthenticated
+  if (!user) {
     return <Navigate to="/portal" replace />;
   }
 
@@ -46,7 +47,7 @@ export default function AppRouter() {
         <Route path="/onboarding/*" element={<OnboardingRouter />} />
       </Route>
 
-      <Route path="/portal" element={<PortalPreview />} /> {/* ✅ Portal view added */}
+      <Route path="/portal" element={<PortalPreview />} /> {/* ✅ Defined Portal Entry */}
 
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
