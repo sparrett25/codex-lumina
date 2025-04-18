@@ -12,6 +12,7 @@ import CompanionPage from "@/pages/Companion/CompanionPage";
 import SettingsPage from "@/pages/Settings/SettingsPage";
 import LivingRhythmPage from "@/pages/LivingRhythm/LivingRhythmPage";
 import OnboardingRouter from "@/views/Onboarding/OnboardingRouter";
+import PortalPreview from "@/pages/Portal/PortalPreview"; // ✅ Add this import
 
 export default function AppRouter() {
   const { user, profile, loading } = useUserSync();
@@ -43,6 +44,9 @@ export default function AppRouter() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/onboarding/*" element={<OnboardingRouter />} />
       </Route>
+
+      <Route path="/portal" element={<PortalPreview />} /> {/* ✅ Portal entry point */}
+
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
