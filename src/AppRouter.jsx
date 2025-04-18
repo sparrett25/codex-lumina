@@ -12,12 +12,12 @@ import CompanionPage from "@/pages/Companion/CompanionPage";
 import SettingsPage from "@/pages/Settings/SettingsPage";
 import LivingRhythmPage from "@/pages/LivingRhythm/LivingRhythmPage";
 import OnboardingRouter from "@/views/Onboarding/OnboardingRouter";
-import PortalPreview from "@/pages/Portal/PortalPreview"; // ✅ Sacred entry
+import PortalPreview from "@/pages/Portal/PortalPreview"; // 🔑 Your sacred gate
 
 export default function AppRouter() {
   const { user, profile, loading } = useUserSync();
 
-  // ✅ Gate rendering until Supabase has returned a defined user (null or object)
+  // 🛡️ Fully block rendering until hydration completes
   if (loading || typeof user === "undefined") {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -26,11 +26,12 @@ export default function AppRouter() {
     );
   }
 
-  // ✅ Now safe to redirect if the user is *truly* unauthenticated
+  // ✅ Send unauthenticated users to the sacred gate
   if (!user) {
-    return <Navigate to="/portal" replace />;
+    return <Navigate to="/entry" replace />;
   }
 
+  // 👣 Send newly created users to onboarding
   if (user && !profile?.has_onboarded) {
     return <Navigate to="/onboarding/welcome" replace />;
   }
@@ -47,8 +48,13 @@ export default function AppRouter() {
         <Route path="/onboarding/*" element={<OnboardingRouter />} />
       </Route>
 
-      <Route path="/portal" element={<PortalPreview />} /> {/* ✅ Defined Portal Entry */}
+      {/* ✅ New entry point route */}
+      <Route path="/entry" element={<PortalPreview />} />
 
+      {/* 👇 Optional cleanup: still route /portal if accessed directly */}
+      <Route path="/portal/*" element={<Navigate to="/entry" replace />} />
+
+      {/* Default fallback */}
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
