@@ -1,8 +1,9 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUserSync } from "@/contexts/UserSyncContext";
 
-export default function PortalGate({ children }) {
+export default function PortalGate() {
   const { user, profile, loading } = useUserSync();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -18,9 +19,10 @@ export default function PortalGate({ children }) {
     return <Navigate to="/portal-preview" replace />;
   }
 
-  if (user && !profile) {
+  // 🛠️ Allow onboarding routes even if profile is not ready
+  if (!profile && !location.pathname.startsWith("/onboarding")) {
     return <Navigate to="/onboarding/welcome" replace />;
   }
 
-  return children;
+  return <Outlet />;
 }

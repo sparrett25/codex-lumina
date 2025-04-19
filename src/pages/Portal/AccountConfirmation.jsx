@@ -1,31 +1,29 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import PortalLayout from "../../layouts/shells/PortalLayout";
-import CodexGlyphGlow from "../../components/common/CodexGlyphGlow";
 
-export default function AccountConfirmation() {
+function AccountConfirmation() {
   const navigate = useNavigate();
 
   return (
-    <PortalLayout showGlyph={false}>
-      <div className="flex flex-col items-center text-center">
-        <CodexGlyphGlow size="lg" pulse className="mb-6" />
-
-        <h1 className="text-2xl font-serif text-indigo-300 mb-2">
-          Welcome, Seeker
-        </h1>
-        <p className="text-zinc-400 text-sm mb-6">
-          You are now recognized by the Codex.<br />
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="max-w-md mx-auto bg-gradient-to-b from-zinc-900 to-zinc-800 text-center p-8 rounded-2xl shadow-xl border border-indigo-500/40 backdrop-blur">
+        <div className="w-24 h-24 mx-auto mb-6 rounded-full border-2 border-indigo-400 shadow-lg flex items-center justify-center">
+          {/* Optional glyph or light animation placeholder */}
+          <div className="w-12 h-12 bg-indigo-400 rounded-full animate-pulse-slow"></div>
+        </div>
+        <h2 className="text-2xl font-bold text-indigo-300 mb-2">Welcome, Seeker</h2>
+        <p className="text-sm text-zinc-300 mb-6">
+          You are now recognized by the Codex. <br />
           Prepare to receive your Signature Profile.
         </p>
-
         <button
           onClick={() => navigate("/onboarding/welcome")}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition-all"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl transition"
         >
           Begin Your Onboarding
         </button>
       </div>
-    </PortalLayout>
+    </div>
   );
 }
+
+export default AccountConfirmation;
