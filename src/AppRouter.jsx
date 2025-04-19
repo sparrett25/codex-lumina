@@ -12,50 +12,54 @@ import CompanionPage from "@/pages/Companion/CompanionPage";
 import SettingsPage from "@/pages/Settings/SettingsPage";
 import LivingRhythmPage from "@/pages/LivingRhythm/LivingRhythmPage";
 import OnboardingRouter from "@/views/Onboarding/OnboardingRouter";
-import PortalPreview from "@/pages/Portal/PortalPreview"; // 🔑 Your sacred gate
+
+// Portal Pages
+import PortalPreview from "@/pages/Portal/PortalPreview";
+import PortalSignIn from "@/pages/Portal/PortalSignIn";
+import KeyEntryView from "@/pages/Portal/KeyEntryView";
+import CreateAccount from "@/pages/Portal/CreateAccount";
+import AccountConfirmation from "@/pages/Portal/AccountConfirmation";
+
+// Gate
+import PortalGate from "@/components/auth/PortalGate";
 
 export default function AppRouter() {
-  const { user, profile, loading } = useUserSync();
+  const { loading } = useUserSync();
 
-  // 🛡️ Fully block rendering until hydration completes
-  if (loading || typeof user === "undefined") {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <p>Syncing your Codex state...</p>
+      <div className="min-h-screen flex items-center justify-center text-white">
+        🌌 Syncing your Codex state...
       </div>
     );
   }
 
-  // ✅ Send unauthenticated users to the sacred gate
-  if (!user) {
-    return <Navigate to="/entry" replace />;
-  }
-
-  // 👣 Send newly created users to onboarding
-  if (user && !profile?.has_onboarded) {
-    return <Navigate to="/onboarding/welcome" replace />;
-  }
-
   return (
     <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/journal" element={<JournalPage />} />
-        <Route path="/rituals" element={<RitualPage />} />
-        <Route path="/companion" element={<CompanionPage />} />
-        <Route path="/rhythm" element={<LivingRhythmPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/onboarding/*" element={<OnboardingRouter />} />
+      {/* Sacred Entry Portal */}
+      <Route path="/portal-preview" element={<PortalPreview />} />
+      <Route path="/sign-in" element={<PortalSignIn />} />
+      <Route path="/key-entry" element={<KeyEntryView />} />
+      <Route path="/create-account" element={<CreateAccount />} />
+      <Route path="/create-account/confirmation" element={<AccountConfirmation />} />
+
+      {/* Protected Routes via PortalGate */}
+      <Route path="/*" element={
+        <PortalGate>
+          <MainLayout />
+        </PortalGate>
+      }>
+        <Route path="home" element={<HomePage />} />
+        <Route path="journal" element={<JournalPage />} />
+        <Route path="rituals" element={<RitualPage />} />
+        <Route path="companion" element={<CompanionPage />} />
+        <Route path="rhythm" element={<LivingRhythmPage />} />
+        <Route path="settings" element={<SettingsPage />} />
+        <Route path="onboarding/*" element={<OnboardingRouter />} />
       </Route>
 
-      {/* ✅ New entry point route */}
-      <Route path="/entry" element={<PortalPreview />} />
-
-      {/* 👇 Optional cleanup: still route /portal if accessed directly */}
-      <Route path="/portal/*" element={<Navigate to="/entry" replace />} />
-
-      {/* Default fallback */}
-      <Route path="*" element={<Navigate to="/home" replace />} />
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/portal-preview" replace />} />
     </Routes>
   );
 }

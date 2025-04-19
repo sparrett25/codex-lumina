@@ -22,7 +22,7 @@ export default function PortalSignIn() {
       setErrorMsg(error.message);
       setLoading(false);
     } else {
-      window.location.href = "/home";
+      location.reload(); // ✅ Reloads to sync Supabase session with UserSyncContext
     }
   };
 
@@ -30,7 +30,7 @@ export default function PortalSignIn() {
     <PortalLayout
       title="Return to the Codex"
       subtitle="Welcome back, traveler. Enter your credentials to resume the journey."
-      showGlyph={false} // ✅ This disables the top glyph
+      showGlyph={false}
     >
       <div className="flex flex-col space-y-6 items-center">
 

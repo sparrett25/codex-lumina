@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import PortalLayout from "../layouts/PortalLayout";
-import CodexGlyphGlow from "../components/CodexGlyphGlow";
+import PortalLayout from "../../layouts/shells/PortalLayout";
+import CodexGlyphGlow from "../../components/common/CodexGlyphGlow";
 
 export default function AccountConfirmation() {
   const navigate = useNavigate();

@@ -10,7 +10,7 @@ const navLinks = [
   { path: "/journal", label: "Journal" },
   { path: "/rituals", label: "Rituals" },
   { path: "/companion", label: "Companion" },
-  { path: "/rhythm", label: "Rhythm" }, // ✅ NEW
+  { path: "/rhythm", label: "Rhythm" },  
   { path: "/settings", label: "Settings" },
 ];
 
@@ -78,7 +78,7 @@ export default function MainLayout() {
               await supabase.auth.signOut();
               sessionStorage.clear();
               localStorage.clear();
-              window.location.href = "/portal";
+              window.location.href = "/portal-preview"; // ✅ FIXED
             }}
             className="text-red-400 hover:text-red-200 underline text-xs transition"
           >
@@ -111,7 +111,7 @@ export default function MainLayout() {
                 await supabase.auth.signOut();
                 sessionStorage.clear();
                 localStorage.clear();
-                window.location.href = "/portal";
+                window.location.href = "/portal-preview"; // ✅ FIXED
               }}
               className="text-red-400 hover:text-red-300 text-sm text-left"
             >

@@ -21,8 +21,11 @@ export function UserSyncProvider({ children }) {
       setUser(currentUser ?? null);
 
       if (!currentUser) {
-        setProfile(null);
-        setLoading(false); // ✅ Only release loading once resolved
+        console.warn("🕓 No user found — delaying fallback logout by 500ms...");
+        setTimeout(() => {
+          setProfile(null);
+          setLoading(false);
+        }, 500); // Extend if Supabase auth still lags
         return;
       }
 
